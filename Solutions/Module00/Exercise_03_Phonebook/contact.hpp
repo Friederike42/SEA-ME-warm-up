@@ -13,9 +13,9 @@ private:
     bool is_bookmarked;
 
 public:
-    Contact(std::string name,
-            std::string phone_number,
-            std::string nick_name);
+    Contact(string name,
+            string phone_number,
+            string nick_name);
     Contact(const Contact &other);
     ~Contact();
 

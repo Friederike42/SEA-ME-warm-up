@@ -1,8 +1,7 @@
 #include "contact.hpp"
 
 // Constructor
-Contact::Contact(string name, string phone_number, string nick_name)
-{
+Contact::Contact(string name, string phone_number, string nick_name){
     this->name = name;
     this->phone_number = phone_number;
     this->nick_name = nick_name;
