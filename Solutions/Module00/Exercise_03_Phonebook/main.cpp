@@ -6,80 +6,21 @@
 You find the exercise description in Modules\Module00 folder
 The main() method is the main entry point of the program.*/
 
-void print(vector<Contact> contacts)
-{
-    cout << "List of contacts" << endl;
-    int count = 0;
-    for (vector<Contact>::iterator i = contacts.begin(); i != contacts.end(); ++i)
-    {
-        cout << endl << count << "--------------\n" << (*i).to_string();
-    }
-    cout << endl;
-}
+vector<Contact> contacts;
 
-string ask_for_user_input(string ask)
-{
-    string user_input;
-    cout << ask << endl;
-    cin >> user_input;
-    if (user_input != "EXIT")
-    {
-        return user_input;
-    }
-    else
-    {
-        exit(0);
-    }
-}
+void print(vector<Contact> contacts);
+string ask_for_user_input(string ask);
+Contact* search_contact(string index_of_contract);
+Contact *search_contact_by_phone(string phone_number);
+vector<Contact> filter_contacts_by_bookmark(bool is_bookmarked);
+bool is_valid_phone_number(string phone_number);
+bool string_to_bool(string to_convert);
+Contact create_contact();
+void erase_by_phone_number(string phone_number);
 
-Contact* search_contact(vector<Contact> contacts, string index_of_contact)
-{
-
-    //Contact found_contact("", "", "");
-    int index = stoi(index_of_contact);
-    cout << "size: " << contacts.size();
-    if (index >= 0 && index < contacts.size())
-    {
-        Contact *found_contact = &contacts[index];
-        return found_contact;
-    }
-    return nullptr;
-}
-
-bool is_valid_phone_number(string phone_number, vector<Contact> contacts)
-{
-    if(phone_number.length() == 0)
-        return false;
-
-    return true;
-}
-
-void add_contact(vector<Contact> contacts)
-{
-    string name, phone_number, nick_name;
-    cout << "Type in name, phone number (must be unique) and nick name of the contact. \n Name: ";
-    cin.ignore(100, '\n');
-    getline(cin, name);
-    cout << " Phone Number: ";
-    getline(cin, phone_number);
-    cout << " Nick name: ";
-    getline(cin, nick_name);
-
-    if (is_valid_phone_number(phone_number, contacts))
-    {
-        Contact new_contact(name, phone_number, nick_name);
-        contacts.push_back(new_contact);
-    }
-    else
-    {
-        cout << "Phone number" << phone_number << " is not a valid phone number. The new contact was not added. Phone number must be unique in all existing contacts and non-empty. Show all contacts by typing <SEARCH>";
-    }
-}
-
-int main(int argc, char **argv)
+int main()
 {
     Converter converter;
-    vector<Contact> contacts;
 
     cout << "Choose one of the Phonebook options <ADD/REMOVE/SEARCH/BOOKMARK> by typing it into the console. You can type <EXIT> anywhere to close the Phonebook: \n";
     string command;
@@ -91,26 +32,35 @@ int main(int argc, char **argv)
 
         // for searching in contacts
         string user_input;
-
         if(command == "ADD"){
-            add_contact(contacts);  // Todo: this is a problematic call. Likely the contacts is having a scope issue (need to pass by reference or sth?)
+            contacts.push_back(create_contact());
+
+            print(contacts);
         }else if(command == "REMOVE"){
-            ask_for_user_input("Remove a contact with an index or phone number. Type Index or phone number:");
-            // remove(contacts, number);
+            string user_input = ask_for_user_input("Remove a contact with a contact number or phone number. Type a contact number (default) or use a preceding #in front of a phone number to indicate you want to remove by phone number: ");
+            if(user_input[0] != '#' && stoi(user_input) < contacts.size())
+            { // this code will fail if user types sth like '#' instead of a digit; try catch for the stoi method?
+                contacts.erase(contacts.begin() + stoi(user_input));
+            }
+            else if (user_input[0] == '#')
+            {
+                string phone_number = user_input.substr(1, user_input.size() - 1);
+                erase_by_phone_number(phone_number);
+            }
+            print(contacts);
+           
         }else if(command == "SEARCH"){
             print(contacts);
-            string index;
-            index = ask_for_user_input("Enter a contact number to display its details");
-            
-            Contact* found_contact = search_contact(contacts, index);
-            if (found_contact){
-                Contact my_contact = *found_contact;
-                string test = my_contact.to_string();
-                cout << test;
-            }
+            string index = ask_for_user_input("Enter a contact number to display its details");
+            cout << search_contact(index)->to_string() << endl;
+            string bookmark = ask_for_user_input("Shall this contact be bookmarked? Type <0> for no, <1> for yes: ");
+            contacts.at(stoi(index)).set_bookmark(string_to_bool(bookmark));
+            print(contacts);
         }else if(command == "BOOKMARK"){
-
+            vector<Contact> contacts_by_bookmark = filter_contacts_by_bookmark(true);
+            print(contacts_by_bookmark);
         }
+        cout << "Next, choose one of the Phonebook options <ADD/REMOVE/SEARCH/BOOKMARK> by typing it into the console. You can type <EXIT> anywhere to close the Phonebook: \n";
         cin >> command;
         command = converter.convert("up", command);
     }
@@ -120,4 +70,123 @@ int main(int argc, char **argv)
 void exit(int success)
 {
     exit(success);
+}
+
+void print(vector<Contact> contacts)
+{
+    cout << "List of contacts" << endl;
+    int count = 0;
+    for (vector<Contact>::iterator i = contacts.begin(); i != contacts.end(); ++i)
+    {
+        cout << endl
+             << count << "--------------\n"
+             << (*i).to_string();
+        count++;
+    }
+    cout << endl;
+}
+
+Contact create_contact()
+{
+    string name, phone_number, nick_name;
+    cout << "Type in name, phone number (must be unique) and nick name of the contact. \n Name: ";
+    cin.ignore(100, '\n');
+    getline(cin, name);
+    cout << " Phone Number: ";
+    getline(cin, phone_number);
+
+    while(!is_valid_phone_number(phone_number)){
+        cout << "Is not a valid phone number. Please type in a phone number longer than 0 digits which is unique in the list of contacts. \n";
+        getline(cin, phone_number);
+    }
+
+    cout << " Nick name: ";
+    getline(cin, nick_name);
+
+    Contact new_contact(name, phone_number, nick_name);
+    return new_contact; //somehow code breaks here. Without error message??
+   
+}
+
+string ask_for_user_input(string ask)
+{
+    cout << ask;
+    string user_input;
+    cin >> user_input;
+    if (user_input != "EXIT")
+    {
+        return user_input;
+    }
+    else
+    {
+        exit(0);
+    }
+}
+
+Contact* search_contact(string index_of_contact)
+{
+
+    int index = stoi(index_of_contact);
+    
+    if (index >= 0 && index < contacts.size())
+    {
+        return &contacts[index];
+    }
+    return nullptr;
+}
+
+Contact* search_contact_by_phone(string phone_number)
+{
+    for (vector<Contact>::iterator i = contacts.begin(); i != contacts.end(); ++i)
+    {
+        if ((*i).get_phone_number() == phone_number)
+        {
+            return &(*i);
+        }
+    }
+    return nullptr;
+}
+
+vector<Contact> filter_contacts_by_bookmark(bool is_bookmarked)
+{
+    vector<Contact> contacts_by_bookmark;
+    for (Contact &c : contacts)
+    {
+        if (c.get_bookmark() == is_bookmarked)
+        {
+            contacts_by_bookmark.push_back(c);
+        }
+    }
+    return contacts_by_bookmark;
+}
+
+bool is_valid_phone_number(string phone_number)
+{
+    if (phone_number.length() == 0)
+        return false;
+    else if (search_contact_by_phone(phone_number))
+        return false;
+    else
+        return true;
+}
+
+void erase_by_phone_number(string phone_number)
+{
+    vector<Contact>::iterator j;
+    for (vector<Contact>::iterator i = contacts.begin(); i != contacts.end(); ++i)
+    {
+        if ((*i).get_phone_number() == phone_number)
+        {
+            j = i;
+        }
+    }
+    contacts.erase(j);
+}
+
+bool string_to_bool(string to_convert)
+{
+    if (to_convert.at(0) == '1')
+        return true;
+    else
+        return false;
 }
