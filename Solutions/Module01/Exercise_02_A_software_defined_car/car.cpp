@@ -14,7 +14,7 @@ Car::Car(const Car &other_car)
     this->year = other_car.get_year();
 };
 
-Car& Car::operator = (const Car &car)
+Car& Car::operator = (const Car &car){
     if(this != &car){
         this->make = car.get_make();
         this->model = car.get_model();
@@ -28,7 +28,7 @@ Car::~Car(){
 
 void Car::drive() const
 {
-    cout << "Here drives a car make " << this->make << ", model " << this->model << " and year " << this->year ;
+    cout << "Here drives a car make " << this->make << ", model " << this->model << " and year " << this->year;
 }
 
 string Car::get_make() const

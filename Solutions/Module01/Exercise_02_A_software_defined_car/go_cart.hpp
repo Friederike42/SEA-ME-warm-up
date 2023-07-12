@@ -1,7 +1,9 @@
-using namespace std;
+#pragma once
+
 #include <iostream>
 #include <string>
 
+using namespace std;
 class Go_Cart final
 {
 private:

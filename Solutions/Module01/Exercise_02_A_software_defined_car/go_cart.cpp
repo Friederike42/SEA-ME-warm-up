@@ -6,13 +6,13 @@ Go_Cart::Go_Cart(){
 
 // Copy constructor
 Go_Cart::Go_Cart(Go_Cart &other_go_cart){
-    this->set_owner(other_go_cart.owner);
+    this->set_owner(other_go_cart.get_owner());
 };
 
 // assignment constructor
 Go_Cart& Go_Cart::operator = (Go_Cart &go_cart){
-    if (this->get_owner() != &go_cart.get_owner()){
-        this->set_owner(go_cart.get_owner()); //todo has issues
+    if (this->get_owner() != go_cart.get_owner()){
+        this->set_owner(go_cart.get_owner());
     }
     return *this;
 };

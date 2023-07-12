@@ -12,6 +12,9 @@ void print(Car* car){
 void print(Sports_Car* car){
     car->drive();
 }
+void print(Go_Cart* cart){
+    cart->go();
+}
 
 int main(){
     Sports_Car *car = new Sports_Car(); 
@@ -23,6 +26,10 @@ int main(){
     Sports_Car static_sports_car("My_static_sports_car", "My_make", "My_model", "70");
     Sports_Car *my_static_sports_car_pointer = &static_sports_car;
     print(my_static_sports_car_pointer);
+
+    Go_Cart tims_go_cart;
+    tims_go_cart.set_owner("Tim");
+
 
     // Delete dynamically created objects (created with new operator) with delete; statically created ones do not need this
     delete car;
