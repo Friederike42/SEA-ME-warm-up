@@ -1,6 +1,5 @@
 #include "car.hpp"
 
-// todo think whether there are more intelligent datatypes for year, use chrono include= auto y = year{2016};?
 Car::Car(string make, string model, string year)
 {
     this->make = make;

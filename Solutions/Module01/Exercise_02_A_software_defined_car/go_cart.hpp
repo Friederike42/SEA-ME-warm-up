@@ -12,15 +12,15 @@ public:
     Go_Cart();
 
     // Copy constructor
-    Go_Cart(const Go_Car &other_car);
+    Go_Cart(Go_Cart &other_cart);
 
     // assignment constructor
-    Go_Cart &operator=(const GoCar &go_car);
+    Go_Cart &operator=(Go_Cart &go_cart);
 
     // Destructor is not virtual, because this class is not supposed to have child classes (see final key word above)
     ~Go_Cart();
 
-    void go() const;
+    void go();
 
     string get_owner() { return this->owner; };
     void set_owner(string owner) { this->owner = owner; };

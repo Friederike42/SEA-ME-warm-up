@@ -1,7 +1,7 @@
 #pragma once
 
-#include "sports_car.hpp"
-#include "towing_car.hpp"
+#include "car.hpp"
+#include "go_cart.hpp"
 
 #include <string>
 #include <iostream>
@@ -9,22 +9,24 @@
 using namespace std;
 
 class Car{
+    friend class Go_Cart;
 
     protected:
         string make;
         string model;
         string year;
+
     public:
-        //Default constructor
+        // Default constructor
         Car(string make = "Douglas Adams", string model = "H2G2", string year = "42");
 
-        //Copy constructor
+        // Copy constructor
         Car(const Car &other_car);
 
-        //assignment constructor
-        Car& operator = (const Car&);
+        // assignment constructor
+        Car &operator=(const Car &);
 
-        //Destructor is virtual, because of a potential downcast
+        // Destructor is virtual, because of a potential downcast
         virtual ~Car();
 
         virtual void drive() const;
