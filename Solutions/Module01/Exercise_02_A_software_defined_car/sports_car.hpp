@@ -1,8 +1,4 @@
-#include <string>
-#include <iostream>
 #include "car.hpp"
-
-using namespace std;
 
 class Sports_Car : public Car
 {

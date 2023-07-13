@@ -35,4 +35,5 @@ class Car{
         string get_model() const;
         string get_year() const;
 
+        void set_make(string make);
 };

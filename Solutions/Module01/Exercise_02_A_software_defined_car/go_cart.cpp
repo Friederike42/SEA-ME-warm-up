@@ -21,5 +21,5 @@ Go_Cart::~Go_Cart(){
 };
 
 void Go_Cart::go() {
-    cout << "Here goes go cart owned by: " << this->get_owner();
+    cout << "Here goes go cart owned by: " << this->get_owner() << endl;
 };

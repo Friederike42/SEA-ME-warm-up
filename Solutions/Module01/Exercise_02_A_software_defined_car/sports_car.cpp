@@ -17,7 +17,7 @@ Sports_Car::Sports_Car(const Sports_Car &other_Sports_Car)
     this->top_speed = other_Sports_Car.get_top_speed();
 };
 
-Sports_Car &Sports_Car::operator=(const Sports_Car& car)
+Sports_Car &Sports_Car::operator = (const Sports_Car& car)
 {
     if (this != &car)
     {

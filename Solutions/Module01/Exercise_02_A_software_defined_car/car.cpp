@@ -45,3 +45,8 @@ string Car::get_year() const
 {
     return this->year;
 }
+
+void Car::set_make(string make)
+{
+    this->make = make;
+}

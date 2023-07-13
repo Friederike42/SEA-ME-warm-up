@@ -1,6 +1,7 @@
 #include "car.hpp"
 #include "go_cart.hpp"
 #include "sports_car.hpp"
+#include "tractor.hpp"
 
 // careful, compiler g++ shows errors !!!
 
@@ -12,27 +13,35 @@ void print(Car* car){
 void print(Sports_Car* car){
     car->drive();
 }
-void print(Go_Cart* cart){
-    cart->go();
-}
 
 int main(){
-    Sports_Car *car = new Sports_Car(); 
+
+    Car *car = new Car("My_car", "My_make", "My_model");
     print(car);
 
-    Car *car2 = new Car("My_car", "My_make", "My_model");
-    print(car2);
+    Sports_Car *sports_car = new Sports_Car(); 
+    print(sports_car);
 
     Sports_Car static_sports_car("My_static_sports_car", "My_make", "My_model", "70");
-    Sports_Car *my_static_sports_car_pointer = &static_sports_car;
-    print(my_static_sports_car_pointer);
+    Sports_Car *sports_car2 = &static_sports_car;
+    print(sports_car2);
 
     Go_Cart tims_go_cart;
     tims_go_cart.set_owner("Tim");
+    tims_go_cart.go();
 
+    // note that towing car is an abstract class due to the tow() method and cannot be instantiated
+    // Tractor(string make, string model, string year, float weight, unsigned short trailing_load_in_tons);
+    Tractor patriks_tractor("Patriks", "Towing car make", "2003", 3800.3f, ((unsigned short)2));
+    patriks_tractor.tow(((unsigned short)30));
+
+    Tractor aleks_tractor = patriks_tractor;
+    aleks_tractor.set_make("Aleks");
+    aleks_tractor.set_weight(1800.3f);
+    aleks_tractor.drive(); // should result in error since aleks tractor is now lighter than its trailing load
 
     // Delete dynamically created objects (created with new operator) with delete; statically created ones do not need this
     delete car;
-    delete car2;
+    delete sports_car;
     return 0;
 }
