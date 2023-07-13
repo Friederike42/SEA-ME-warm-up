@@ -30,8 +30,7 @@ int main(){
     tims_go_cart.set_owner("Tim");
     tims_go_cart.go();
 
-    // note that towing car is an abstract class due to the tow() method and cannot be instantiated
-    // Tractor(string make, string model, string year, float weight, unsigned short trailing_load_in_tons);
+    // Note that towing_car is an abstract class due to the tow() method and cannot be instantiated
     Tractor patriks_tractor("Patriks", "Towing car make", "2003", 3800.3f, ((unsigned short)2));
     patriks_tractor.tow(((unsigned short)30));
 
