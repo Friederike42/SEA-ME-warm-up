@@ -21,6 +21,9 @@ int main(){
     Sports_Car *my_static_sports_car_pointer = &static_sports_car;
     print(my_static_sports_car_pointer);
 
+    Sports_Car my_fourth_car(static_sports_car);
+    my_fourth_car.drive();
+    
     // Delete dynamically created objects (created with new operator) with delete; statically created ones do not need this
     delete car;
     delete car2;

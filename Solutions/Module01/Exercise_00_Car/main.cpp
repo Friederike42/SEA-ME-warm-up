@@ -10,8 +10,9 @@ int main(){
     Car a("my_model_a", 20);
 
     cout << "Copy constructor should print {test, 9}: \n";
-    auto b = z;
-    print(b);
+    auto b = z; // assignment op.
+    Car ba(z); // copy constructor  --> jkim corrected this
+    print(ba);
 
     cout << "Default constructor call should print {default_name, 50} - see car.hpp:\n";
     Car c;
